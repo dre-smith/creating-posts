@@ -13,22 +13,32 @@ export class PostsComponent extends Component {
         const html = posts.map(post => renderPost(post))
         this.$el.insertAdjacentHTML('afterbegin', html.join(' '))
     }
+
+    onHide() {
+        this.$el.innerHTML = ''
+    }
 }
 
 function renderPost(post) {
+    const tag = post.type === 'news'
+        ? '<li class="tag tag-blue tag-rounded">Новость</li>'
+        : '<li class="tag tag-rounded">Заметка</li>'
+
+    const button = '<button class="button-round button-small button-primary">Сохранить</button>'
     return `
         <div class="panel">
             <div class="panel-head">
-                <p class="panel-title">Название поста</p>
+                <p class="panel-title">${post.title}</p>
                 <ul class="tags">
-                <li class="tag tag-blue tag-rounded">Новость</li>
+                    ${tag}
                 </ul>
             </div>
             <div class="panel-body">
-                <p class="multi-line">Lorem ipsum dolor sit amet.</p>
+                <p class="multi-line">${post.fulltext}</p>
             </div>
             <div class="panel-footer w-panel-footer">
-                <small>12.12.12</small>
+                <small>${post.date}</small>
+                ${button}
             </div>
         </div>
     `
