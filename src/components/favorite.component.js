@@ -1,4 +1,5 @@
 import { Component } from '../core/component'
+import { apiService } from '../services/api.service'
 
 export class FavoriteComponent extends Component {
     constructor(id) {
@@ -16,15 +17,21 @@ export class FavoriteComponent extends Component {
     }
 }
 
-function linkClickHandler(event) {
+async function linkClickHandler(event) {
     event.preventDefault()
+
+    if (event.target.classList.contains('js-link')) {
+        const postId = event.target.textContent
+
+        const post = await apiService.fetchPostById(postId)
+    }
 }
 
 function renderList(list = []) {
     if (list.length) {
         return `
         <ul>
-            ${list.map(i => `<li><a href="#">${i}</a></li>`).join(' ')}
+            ${list.map(i => `<li><a href="#" class="js-link">${i}</a></li>`).join(' ')}
         </ul>
         `
     }
